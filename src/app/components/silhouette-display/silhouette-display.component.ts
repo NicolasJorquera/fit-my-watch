@@ -15,7 +15,9 @@ export class SilhouetteDisplayComponent {
   constructor(private watchService: WatchService) {
 
     this.watchService.watchSize$.subscribe(size => {
+      console.log(size);
       this.watchSize = size;
     });
   }
+
 }

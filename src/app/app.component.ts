@@ -10,8 +10,7 @@ import { SilhouetteDisplayComponent } from './components/silhouette-display/silh
     SilhouetteDisplayComponent,
     // RouterOutlet
   ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   title = 'fit-my-watch';

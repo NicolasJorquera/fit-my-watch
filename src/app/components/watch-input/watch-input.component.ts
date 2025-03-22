@@ -23,6 +23,7 @@ export class WatchInputComponent {
   }
 
   submit() {
+    console.log(this.watchForm.value);
     this.watchService.updateWatchSize(this.watchForm.value);
   }
 }
