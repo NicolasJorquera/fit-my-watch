@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { WatchInputComponent } from './components/watch-input/watch-input.component';
+import { SilhouetteDisplayComponent } from './components/silhouette-display/silhouette-display.component';
+// import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    WatchInputComponent,
+    SilhouetteDisplayComponent,
+    // RouterOutlet
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
