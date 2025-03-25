@@ -1,20 +1,11 @@
 <div class="flex flex-col items-center p-4">
   <!-- model-viewer element to display the watch (scale with input of watchSize) -->
-  <model-viewer
-    src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-    ar
-    auto-rotate
-    camera-controls
-    shadow-intensity="1"
-    shadow-softness="0"
-    environment-intensity="0.3"
-    exposure="0.2"
-    style="width: {{ watchSize.width }}px; height: {{ watchSize.height }}px">
-  </model-viewer>
+  <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" ar auto-rotate camera-controls
+    shadow-intensity="1" shadow-softness="0" environment-intensity="0.3" exposure="0.2" model-viewer/>
 
 
-  <!-- Displaying the dimensions as text -->
-  <div class="bg-black w-[50px] h-[50px] mt-2 flex items-center justify-center">
-    <p class="text-white text-center text-xs">{{ watchSize.width }} x {{ watchSize.height }}</p>
-  </div>
+    <!-- Displaying the dimensions as text -->
+    <div class="bg-black w-[50px] h-[50px] mt-2 flex items-center justify-center">
+      <p class="text-white text-center text-xs">{{ watchSize.width }} x {{ watchSize.height }}</p>
+    </div>
 </div>

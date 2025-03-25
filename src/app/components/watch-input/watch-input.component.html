@@ -1,6 +1,15 @@
-<form [formGroup]="watchForm" (ngSubmit)="submit()" class="p-4 space-y-4 bg-gray-100 rounded-lg">
-    <label>Watch Width (mm): <input type="number" formControlName="width" class="p-2 border" /></label>
-    <label>Watch Height (mm): <input type="number" formControlName="height" class="p-2 border" /></label>
-    <label>Wrist Size (mm): <input type="number" formControlName="wristSize" class="p-2 border" /></label>
-    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Preview</button>
-  </form>
+<form [formGroup]="watchForm" (ngSubmit)="submit()" class="p-4 bg-gray-100 rounded-lg max-w-l">
+  <div class="flex items-center py-2 justify-between justify-self-stretch">
+    <label class="w-fit mr-10">Watch Width (mm):</label>
+    <input type="number" formControlName="width" class="p-2 border w-24" />
+  </div>
+  <div class="flex items-center py-2 justify-between justify-self-stretch">
+    <label class="w-fit mr-10">Watch Height (mm):</label>
+    <input type="number" formControlName="height" class="p-2 border w-24" />
+  </div>
+  <div class="flex items-center py-2 justify-between justify-self-stretch">
+    <label class="w-fit mr-10">Wrist Size (mm):</label>
+    <input type="number" formControlName="wristSize" class="p-2 border w-24" />
+  </div>
+  <button type="submit" class="px-4 py-2 bg-yellow-950 text-white rounded mt-10">Preview</button>
+</form>
