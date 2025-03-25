@@ -6,6 +6,12 @@
 /out-tsc
 /bazel-out
 
+# Ignore workspace
+*.code-workspace
+
+# Large files
+*.glb
+
 # Node
 /node_modules
 npm-debug.log
