@@ -42,6 +42,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
       this.strap_width = parameters.strap_width;
       this.watch_shape = parameters.watch_shape;
       this.wrist_size = parameters.wrist_size;
+      this.updateCanvasSize();
+      this.createWatch();
     });
   }
 
@@ -105,6 +107,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
     const wristMaterial = new THREE.MeshStandardMaterial({ color: 0xf1c27d });
     this.wrist = new THREE.Mesh(wristGeometry, wristMaterial);
     this.wrist.rotation.z = Math.PI / 2;
+    this.wrist.position.set(-45, -wrist_radius, 0);
     this.scene.add(this.wrist);
   }
 
@@ -132,7 +135,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
 
     const watchMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
     this.watch = new THREE.Mesh(watchGeometry, watchMaterial);
-    this.watch.position.set(45, this.watch_thickness / 2 + wrist_radius, 0); // position the watch above the wrist
+    this.watch.position.set(0, this.watch_thickness / 2, 0); // position the watch above the wrist
     this.scene.add(this.watch);
 
     const strap_length = this.wrist_size;
@@ -144,7 +147,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
     );
     const strapMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
     this.strap = new THREE.Mesh(strapGeometry, strapMaterial);
-    this.strap.position.set(45, wrist_radius, 0);
+    this.strap.position.set(0, 0, 0);
     this.scene.add(this.strap);
   }
 
