@@ -14,8 +14,8 @@ export class ModelService {
     watch_shape: 'round',
     watch_width: 34,
     watch_height: 40,
-    watch_thickness: 10,
-    strap_width: 20,
+    watch_thickness: 4,
+    strap_width: 18,
     wrist_size: 180,
    });
 

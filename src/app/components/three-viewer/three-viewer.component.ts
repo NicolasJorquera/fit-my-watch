@@ -20,8 +20,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
 
   @Input() watch_width: number = 34;
   @Input() watch_height: number = 40;
-  @Input() watch_thickness: number = 10;
-  @Input() strap_width: number = 20;
+  @Input() watch_thickness: number = 4;
+  @Input() strap_width: number = 18;
   @Input() watch_shape: 'round' | 'square' = 'round';
   @Input() wrist_size: number = 180;
 
@@ -100,14 +100,14 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
     const wrist_radius = this.wrist_size / (Math.PI * 2);
     const wristGeometry = new THREE.CylinderGeometry(
       wrist_radius * 1.2,
-      wrist_radius,
+      wrist_radius * 0.9,
       200,
       32
     );
     const wristMaterial = new THREE.MeshStandardMaterial({ color: 0xf1c27d });
     this.wrist = new THREE.Mesh(wristGeometry, wristMaterial);
     this.wrist.rotation.z = Math.PI / 2;
-    this.wrist.position.set(-45, -wrist_radius, 0);
+    this.wrist.position.set(-45, -(wrist_radius + 2), 0);
     this.scene.add(this.wrist);
   }
 
@@ -132,10 +132,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
     }
 
     const wrist_radius = this.wrist_size / (Math.PI * 2);
+    const inclination = -Math.atan((wrist_radius * 0.3) / 200);
 
     const watchMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
     this.watch = new THREE.Mesh(watchGeometry, watchMaterial);
-    this.watch.position.set(0, this.watch_thickness / 2, 0); // position the watch above the wrist
+    this.watch.position.set(0, 0, 0); // position the watch above the wrist
+    this.watch.rotateZ(inclination);
     this.scene.add(this.watch);
 
     const strap_length = this.wrist_size;
@@ -147,7 +149,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
     );
     const strapMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
     this.strap = new THREE.Mesh(strapGeometry, strapMaterial);
-    this.strap.position.set(0, 0, 0);
+    this.strap.position.set(0, -(this.watch_thickness / 2), 0);
+    this.strap.rotateZ(inclination);
     this.scene.add(this.strap);
   }
 
