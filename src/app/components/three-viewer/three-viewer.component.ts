@@ -18,17 +18,18 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 export class ThreeViewerComponent implements AfterViewInit, OnChanges {
   @ViewChild('threeCanvas', { static: true }) canvasRef!: ElementRef;
 
-  @Input() width: number = 40;
-  @Input() height: number = 50;
-  @Input() thickness: number = 10;
-  @Input() strapWidth: number = 20;
-  @Input() shape: 'round' | 'square' = 'round';
+  @Input() watch_width: number = 34;
+  @Input() watch_height: number = 40;
+  @Input() watch_thickness: number = 10;
+  @Input() strap_width: number = 20;
+  @Input() watch_shape: 'round' | 'square' = 'round';
+  @Input() wrist_size: number = 180;
 
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
-  private reloj!: THREE.Mesh;
-  private correa!: THREE.Mesh;
+  private watch!: THREE.Mesh;
+  private strap!: THREE.Mesh;
   private wrist!: THREE.Mesh;
   private controls!: OrbitControls;
 
@@ -44,11 +45,14 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.scene) {
       this.createWatch();
+    } else {
+      this.initThreeJS();
     }
   }
 
   private initThreeJS() {
     if (typeof window === 'undefined') {
+      console.warn('ThreeViewerComponent.initThreeJS: window is undefined');
       return;
     }
 
@@ -60,6 +64,8 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
       0.1,
       1000
     );
+
+    this.scene.background = new THREE.Color(0x97d9ff);
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -76,48 +82,52 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
   }
 
   private createWrist() {
-    const wristGeometry = new THREE.CylinderGeometry(30, 30, 60, 32);
+    const wrist_radius = this.wrist_size / (Math.PI * 2);
+    const wristGeometry = new THREE.CylinderGeometry(wrist_radius * 1.2, wrist_radius, 200, 32);
     const wristMaterial = new THREE.MeshStandardMaterial({ color: 0xf1c27d });
     this.wrist = new THREE.Mesh(wristGeometry, wristMaterial);
     this.wrist.rotation.z = Math.PI / 2;
     this.scene.add(this.wrist);
-
   }
 
   private createWatch() {
-    if (this.reloj) this.scene.remove(this.reloj);
-    if (this.correa) this.scene.remove(this.correa);
+    if (this.watch) this.scene.remove(this.watch);
+    if (this.strap) this.scene.remove(this.strap);
 
-    let relojGeometry: THREE.BufferGeometry;
-    if (this.shape === 'square') {
-      relojGeometry = new THREE.BoxGeometry(
-        this.width,
-        this.thickness,
-        this.height
+    let watchGeometry: THREE.BufferGeometry;
+    if (this.watch_shape === 'square') {
+      watchGeometry = new THREE.BoxGeometry(
+        this.watch_width,
+        this.watch_thickness,
+        this.watch_height
       );
     } else {
-      relojGeometry = new THREE.CylinderGeometry(
-        this.width / 2,
-        this.width / 2,
-        this.thickness,
+      watchGeometry = new THREE.CylinderGeometry(
+        this.watch_width / 2,
+        this.watch_width / 2,
+        this.watch_thickness,
         32
       );
     }
 
-    const relojMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
-    this.reloj = new THREE.Mesh(relojGeometry, relojMaterial);
-    this.reloj.position.set(0, this.thickness / 2 + 30, 0);
-    this.scene.add(this.reloj);
+    const wrist_radius = this.wrist_size / (Math.PI * 2);
+
+    const watchMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+    this.watch = new THREE.Mesh(watchGeometry, watchMaterial);
+    this.watch.position.set(45, this.watch_thickness / 2 + wrist_radius, 0); // position the watch above the wrist
+    this.scene.add(this.watch);
+
+    const strap_length = this.wrist_size;
 
     const strapGeometry = new THREE.BoxGeometry(
-      this.strapWidth,
+      this.strap_width,
       2,
-      this.height + 20
+      this.watch_height + strap_length
     );
     const strapMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
-    this.correa = new THREE.Mesh(strapGeometry, strapMaterial);
-    this.correa.position.set(0, 30, 0);
-    this.scene.add(this.correa);
+    this.strap = new THREE.Mesh(strapGeometry, strapMaterial);
+    this.strap.position.set(45, wrist_radius, 0);
+    this.scene.add(this.strap);
   }
 
   private updateCanvasSize() {
