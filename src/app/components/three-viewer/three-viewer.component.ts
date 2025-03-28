@@ -44,6 +44,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
       this.wrist_size = parameters.wrist_size;
       this.updateCanvasSize();
       this.createWatch();
+      this.createWrist();
     });
   }
 
@@ -82,7 +83,10 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
 
     this.scene.background = new THREE.Color(0x97d9ff);
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize(this.canvasRef.nativeElement.offsetWidth, this.canvasRef.nativeElement.offsetWidth / 2);
+    this.renderer.setSize(
+      this.canvasRef.nativeElement.offsetWidth,
+      this.canvasRef.nativeElement.offsetWidth / 2
+    );
 
     this.canvasRef.nativeElement.appendChild(this.renderer.domElement);
 
@@ -97,6 +101,9 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
   }
 
   private createWrist() {
+    if (this.wrist) this.scene.remove(this.wrist);
+    console.log('Creating wrist');
+    console.log(this.wrist_size);
     const wrist_radius = this.wrist_size / (Math.PI * 2);
     const wristGeometry = new THREE.CylinderGeometry(
       wrist_radius * 1.2,
@@ -142,15 +149,52 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
 
     const strap_length = this.wrist_size;
 
-    const strapGeometry = new THREE.BoxGeometry(
-      this.strap_width,
-      2,
-      this.watch_height + strap_length
+    // 1) Prepara un array de puntos (Vector3) que describan el arco
+    const arcPoints: THREE.Vector3[] = [];
+    const segments = 50; // cuántos puntos para aproximar el arco
+    const startAngle = Math.PI / 7; // °
+    const endAngle = (13 * Math.PI) / 7; // 315°
+    const radius = wrist_radius + 2;
+
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments;
+      const angle = startAngle + (endAngle - startAngle) * t;
+
+      // Arco en el plano XZ
+      const x = radius * Math.cos(angle);
+      const y = 0; // sin cambio en Y (arco “horizontal”)
+      const z = radius * Math.sin(angle);
+
+      arcPoints.push(new THREE.Vector3(x, y, z));
+    }
+
+    // 2) Crea la curva 3D a partir de estos puntos
+    const arcCurve3D = new THREE.CatmullRomCurve3(arcPoints);
+
+    const extrudeSettings: THREE.ExtrudeGeometryOptions = {
+      steps: 50,
+      bevelEnabled: false,
+      extrudePath: arcCurve3D,
+    };
+
+    // 4) Define el Shape de la sección (por ejemplo, rectangular)
+    const strapShape = new THREE.Shape();
+    const strap_thickness = 2;
+
+    strapShape.moveTo(0, 0);
+    strapShape.lineTo(this.strap_width, 0);
+    strapShape.lineTo(this.strap_width, strap_thickness);
+    strapShape.lineTo(0, strap_thickness);
+    strapShape.lineTo(0, 0);
+
+    const strapGeometry = new THREE.ExtrudeGeometry(
+      strapShape,
+      extrudeSettings
     );
     const strapMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
     this.strap = new THREE.Mesh(strapGeometry, strapMaterial);
-    this.strap.position.set(0, -(this.watch_thickness / 2), 0);
-    this.strap.rotateZ(inclination);
+    this.strap.position.set(-(this.strap_width / 2), -wrist_radius, 0);
+    this.strap.rotateZ(Math.PI / 2);
     this.scene.add(this.strap);
   }
 

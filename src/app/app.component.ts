@@ -17,17 +17,19 @@ import { ThreeViewerComponent } from './components/three-viewer/three-viewer.com
 export class AppComponent {
   title = 'fit-my-watch';
 
-  watchConfig: { 
-    width: number; 
-    height: number; 
-    thickness: number; 
-    strapWidth: number; 
-    shape: "round" | "square"; 
+  modelParameters: { 
+    watch_shape: 'round' | 'square',
+    watch_width: number,
+    watch_height: number,
+    watch_thickness: number,
+    strap_width: number,
+    wrist_size: number,
   } = {
-    width: 40,
-    height: 50,
-    thickness: 10,
-    strapWidth: 20,
-    shape: "round" // Valor válido
+    watch_shape: 'round',
+    watch_width: 34,
+    watch_height: 40,
+    watch_thickness: 4,
+    strap_width: 18,
+    wrist_size: 180,
   };  
 }
