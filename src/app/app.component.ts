@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { WatchInputComponent } from './components/watch-input/watch-input.component';
-import { SilhouetteDisplayComponent } from './components/silhouette-display/silhouette-display.component';
+// import { SilhouetteDisplayComponent } from './components/silhouette-display/silhouette-display.component';
 import { ThreeViewerComponent } from './components/three-viewer/three-viewer.component';
 // import { RouterOutlet } from '@angular/router';
 

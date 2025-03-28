@@ -1,15 +1,27 @@
-<form [formGroup]="watchForm" (ngSubmit)="submit()" class="p-4 bg-gray-100 rounded-lg max-w-l">
+<form [formGroup]="modelForm" (ngSubmit)="submit()" class="p-4 m-10 bg-gray-100 rounded-lg max-w-lg justify-self-center">
   <div class="flex items-center py-2 justify-between justify-self-stretch">
-    <label class="w-fit mr-10">Watch Width (mm):</label>
-    <input type="number" formControlName="width" class="p-2 border w-24" />
+    <label class="w-fit mr-10">Watch shape:</label>
+    <input type="text" formControlName="watch_shape" class="p-2 border w-24" />
   </div>
   <div class="flex items-center py-2 justify-between justify-self-stretch">
-    <label class="w-fit mr-10">Watch Height (mm):</label>
-    <input type="number" formControlName="height" class="p-2 border w-24" />
+    <label class="w-fit mr-10">Watch width (mm):</label>
+    <input type="number" formControlName="watch_width" class="p-2 border w-24" />
   </div>
   <div class="flex items-center py-2 justify-between justify-self-stretch">
-    <label class="w-fit mr-10">Wrist Size (mm):</label>
-    <input type="number" formControlName="wristSize" class="p-2 border w-24" />
+    <label class="w-fit mr-10">Watch height (mm):</label>
+    <input type="number" formControlName="watch_height" class="p-2 border w-24" />
+  </div>
+  <div class="flex items-center py-2 justify-between justify-self-stretch">
+    <label class="w-fit mr-10">Watch thickness (mm):</label>
+    <input type="number" formControlName="watch_thickness" class="p-2 border w-24" />
+  </div>
+  <div class="flex items-center py-2 justify-between justify-self-stretch">
+    <label class="w-fit mr-10">Strap width (mm):</label>
+    <input type="number" formControlName="strap_width" class="p-2 border w-24" />
+  </div>
+  <div class="flex items-center py-2 justify-between justify-self-stretch">
+    <label class="w-fit mr-10">Wrist size (mm):</label>
+    <input type="number" formControlName="wrist_size" class="p-2 border w-24" />
   </div>
   <button type="submit" class="px-4 py-2 bg-yellow-950 text-white rounded mt-10">Preview</button>
 </form>

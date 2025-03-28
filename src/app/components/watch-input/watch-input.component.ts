@@ -1,29 +1,32 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { WatchService } from '../../services/watch.service';
-import { CommonModule } from '@angular/common'; 
+import { ModelService } from '../../services/model.service';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-watch-input',
-    standalone: true,
+  standalone: true,
   templateUrl: './watch-input.component.html',
-//   styleUrls: ['./watch-input.component.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  //   styleUrls: ['./watch-input.component.css'],
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class WatchInputComponent {
-  watchForm: FormGroup;
+  modelForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private watchService: WatchService) {
-    this.watchForm = this.fb.group({
-      width: [40],
-      height: [40],
-      wristSize: [180]
+  constructor(private fb: FormBuilder, private modelService: ModelService) {
+    this.modelForm = this.fb.group({
+      watch_shape: ['round'],
+      watch_width: [34],
+      watch_height: [40],
+      watch_thickness: [10],
+      strap_width: [20],
+      wrist_size: [180],
     });
   }
 
   submit() {
-    console.log(this.watchForm.value);
-    this.watchService.updateWatchSize(this.watchForm.value);
+    console.log(this.modelForm.value);
+    this.modelService.updateModelParametersSize(this.modelForm.value);
   }
 }

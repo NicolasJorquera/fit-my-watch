@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
+import { ModelService } from '../../services/model.service';
 
 @Component({
   selector: 'app-watch-preview',
@@ -32,6 +32,18 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
   private strap!: THREE.Mesh;
   private wrist!: THREE.Mesh;
   private controls!: OrbitControls;
+
+  constructor(private modelService: ModelService) {
+    this.modelService.modelParameters$.subscribe((parameters) => {
+      console.log(parameters);
+      this.watch_width = parameters.watch_width;
+      this.watch_height = parameters.watch_height;
+      this.watch_thickness = parameters.watch_thickness;
+      this.strap_width = parameters.strap_width;
+      this.watch_shape = parameters.watch_shape;
+      this.wrist_size = parameters.wrist_size;
+    });
+  }
 
   ngAfterViewInit() {
     this.initThreeJS();
@@ -60,14 +72,15 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
     this.camera = new THREE.PerspectiveCamera(
       75,
       // limit camera/canvas size to parent element
-      this.canvasRef.nativeElement.offsetWidth / this.canvasRef.nativeElement.offsetHeight,
+      this.canvasRef.nativeElement.offsetWidth /
+        this.canvasRef.nativeElement.offsetHeight,
       0.1,
       1000
     );
 
     this.scene.background = new THREE.Color(0x97d9ff);
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(this.canvasRef.nativeElement.offsetWidth, this.canvasRef.nativeElement.offsetWidth / 2);
 
     this.canvasRef.nativeElement.appendChild(this.renderer.domElement);
 
@@ -83,7 +96,12 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
 
   private createWrist() {
     const wrist_radius = this.wrist_size / (Math.PI * 2);
-    const wristGeometry = new THREE.CylinderGeometry(wrist_radius * 1.2, wrist_radius, 200, 32);
+    const wristGeometry = new THREE.CylinderGeometry(
+      wrist_radius * 1.2,
+      wrist_radius,
+      200,
+      32
+    );
     const wristMaterial = new THREE.MeshStandardMaterial({ color: 0xf1c27d });
     this.wrist = new THREE.Mesh(wristGeometry, wristMaterial);
     this.wrist.rotation.z = Math.PI / 2;
@@ -134,7 +152,7 @@ export class ThreeViewerComponent implements AfterViewInit, OnChanges {
     const canvasElement = this.canvasRef.nativeElement;
     const width = canvasElement.clientWidth;
     const height = canvasElement.clientHeight;
-  
+
     this.renderer.setSize(width, height);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
